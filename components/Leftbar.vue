@@ -1,16 +1,28 @@
 <template>
-    <Draggable class="leftbar" v-model="elements" :group="{ pull: 'clone' }">
-        <div class="element" v-for="(element, idx) in elements" :key="idx">{{element.name}}</div>
-    </Draggable>
+    <draggable class="leftbar" v-model="elements" :clone="addElement" :group="{name: 'elements', pull: 'clone', put: false}" item-key="id">
+        <template #item="{ element }">
+            <div class="element">{{element.name}}</div>
+        </template>
+    </draggable>
 </template>
 
 <script>
+import draggable from 'vuedraggable';
 export default {
     data() {
         return {
-            elements: [{name: 'headline'}, {name: 'text'}, {name: 'image'}],
+            elements: [{name: 'headline', id: 0}, {name: 'text', id: 1}, {name: 'image', id: 2}],
         }
     },
+    components: {draggable},
+    methods: {
+        addElement({ name, id}) {
+            return {
+                name, 
+                id: Date.now()
+            }
+        }
+    }
 }
 </script>
 
